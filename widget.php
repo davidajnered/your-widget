@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Widget Framework
+ * Plugin Name: Your Widget
  * Version: 0.1
  * Plugin URI: http://davidajnered.com
- * Description: Code framework for fast development of new wordpress widgets.
+ * Description: Your Widget is a code framework for fast and easy development of new wordpress widgets.
  * Author: David Ajnered
  */
 namespace YourWidgetNamespace;
