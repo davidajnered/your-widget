@@ -117,19 +117,19 @@ class YourlWidget extends \WP_Widget
         $tmplData = $this->getTmplData($instance);
 
         // ... or add a function in your functions.php to modify the data there.
-        $customTmplData = do_action('widget_tmpl_data', $tmplData);
-
-        // Merge $tmplData with the settings from register_sidebar(), usually found in function.php
-        $tmplData = array_merge($args, $tmplData);
-
-        // Log $tmplData here for complete list of data
-        // error_log(var_export($tmplData, true));
+        $tmplData = apply_filters('widget_tmpl_data', $tmplData);
 
         $tmplFile = $this->tmplDir . 'widget.html';
-        if (isset($instance['tmpl_file']) && !empty($instance['tmpl_file'])) {
-            $customtmplFile = get_tmpl_directory() . '/' . $instance['tmpl_file'];
-            if (file_exists($customtmplFile)) {
-                $tmplFile = $customtmplFile;
+        if (isset($instance['template_file']) && !empty($instance['template_file'])) {
+            $customTmplFile = get_template_directory() . '/' . $instance['template_file'];
+
+            // Add .html if missing
+            if (substr($customTmplFile, -5) != '.html') {
+                $customTmplFile .= '.html';
+            }
+
+            if (file_exists($customTmplFile)) {
+                $tmplFile = str_replace(ABSPATH, '', $customTmplFile);
             }
         }
 
