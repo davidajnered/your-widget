@@ -1,4 +1,4 @@
-Your Widget
+Your Widget - A Framework
 =========
 
 Your Widget is a code framework for fast and easy development of new wordpress widgets. It has all the necessary methods implemented, and Twig is loaded and setup and ready for templating.
