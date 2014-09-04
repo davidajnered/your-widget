@@ -184,5 +184,5 @@ add_action('widgets_init', function () {
 
 // Add admin style to make the widget look nice for your users
 add_action('admin_enqueue_scripts', function () {
-    wp_enqueue_style('your-widget-css', '/wp-content/plugins/' . plugin_basename(__FILE__) . '/admin.css');
+    wp_enqueue_style('cinnaroll-widget-css', plugin_dir_url(__FILE__) . '/admin.css');
 });
