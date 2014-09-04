@@ -58,7 +58,11 @@ class YourlWidget extends \WP_Widget
      */
     private function loadTwig()
     {
-        require_once plugin_dir_path(__FILE__) . '/lib/Twig/Autoloader.php';
+        // Check if Twig_Autoloader is loaded
+        if (!class_exists('Twig_Autoloader')) {
+            require_once plugin_dir_path(__FILE__) . '/lib/Twig/Autoloader.php';
+        }
+
         \Twig_Autoloader::register();
         $twigLoader = new \Twig_Loader_Filesystem(ABSPATH);
         $args = ['autoescape' => false];
