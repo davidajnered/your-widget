@@ -25,32 +25,10 @@ class YourlWidget extends \WP_Widget
      *
      * array with name and input type.
      */
-    private $formFields = [
+    private $fields = [
         'title' => [
             'label' => 'Title',
             'type' => 'text',
-        ],
-        'number_of_posts' => [
-            'label' => 'Number of posts',
-            'type' => 'number',
-        ],
-        'collection' => [
-            'label' => 'Collection',
-            'type' => 'checkbox',
-            'options' => [
-                'popular' => [
-                    'label' => 'Popular',
-                    'value' => 'popular',
-                ],
-                'recent' => [
-                    'label' => 'Recent',
-                    'value' => 'recent',
-                ],
-                'similar' => [
-                    'label' => 'Similar',
-                    'value' => 'similar',
-                ]
-            ]
         ],
         'template_file' => [
             'label' => 'Template',
@@ -70,6 +48,7 @@ class YourlWidget extends \WP_Widget
         );
 
         // Setup variables
+        $this->fields = apply_filters('your_widget_fields', $this->fields);
         $this->tmplDir = '/' . str_replace(ABSPATH, '', plugin_dir_path(__FILE__)) . 'templates/';
         $this->twig = $this->loadTwig();
     }
@@ -96,11 +75,12 @@ class YourlWidget extends \WP_Widget
      */
     private function getTmplData($instance)
     {
-        $tmplData = [];
-
         if (!empty($instance)) {
             $tmplData = $instance;
         }
+
+        // Add a widget id so widget can be identified in filters
+        $tmplData += ['widget_id' => $this->id_base];
 
         return $tmplData;
     }
@@ -117,7 +97,7 @@ class YourlWidget extends \WP_Widget
         $tmplData = $this->getTmplData($instance);
 
         // ... or add a function in your functions.php to modify the data there.
-        $tmplData = apply_filters('widget_tmpl_data', $tmplData);
+        $tmplData = apply_filters('your_widget_tmpl_data', $tmplData);
 
         $tmplFile = $this->tmplDir . 'widget.html';
         if (isset($instance['template_file']) && !empty($instance['template_file'])) {
@@ -143,22 +123,22 @@ class YourlWidget extends \WP_Widget
      */
     public function form($instance)
     {
-        $formFields = [];
-        foreach ($this->formFields as $fieldName => $fieldData) {
-            $formFields[$fieldName] = $fieldData;
+        $fields = [];
+        foreach ($this->fields as $fieldName => $fieldData) {
+            $fields[$fieldName] = $fieldData;
 
-            if ($fieldData['type'] == 'checkbox') {
-                $formFields[$fieldName]['selected'] = isset($instance[$fieldName]) ? $instance[$fieldName] : null;
+            if (in_array($fieldData['type'], array('checkbox', 'radio'))) {
+                $fields[$fieldName]['selected'] = isset($instance[$fieldName]) ? $instance[$fieldName] : null;
             } else {
-                $formFields[$fieldName]['value'] = isset($instance[$fieldName]) ? $instance[$fieldName] : null;
+                $fields[$fieldName]['value'] = isset($instance[$fieldName]) ? $instance[$fieldName] : null;
             }
 
-            $formFields[$fieldName]['field_id'] = $this->get_field_id($fieldName);
-            $formFields[$fieldName]['field_name'] = $this->get_field_name($fieldName);
+            $fields[$fieldName]['field_id'] = $this->get_field_id($fieldName);
+            $fields[$fieldName]['field_name'] = $this->get_field_name($fieldName);
         }
 
         $tmplData = [
-            'form_fields' => $formFields,
+            'form_fields' => $fields,
         ];
 
         $tmplFile = $this->tmplDir . 'form.html';
