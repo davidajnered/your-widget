@@ -48,7 +48,7 @@ class YourlWidget extends \WP_Widget
         );
 
         // Setup variables
-        $this->fields = apply_filters('your_widget_fields', $this->fields);
+        $this->fields = apply_filters('your_widget_fields', $this->fields, $this->id_base);
         $this->tmplDir = '/' . str_replace(ABSPATH, '', plugin_dir_path(__FILE__)) . 'templates/';
         $this->twig = $this->loadTwig();
     }
@@ -79,9 +79,6 @@ class YourlWidget extends \WP_Widget
             $tmplData = $instance;
         }
 
-        // Add a widget id so widget can be identified in filters
-        $tmplData += ['widget_id' => $this->id_base];
-
         return $tmplData;
     }
 
@@ -97,7 +94,7 @@ class YourlWidget extends \WP_Widget
         $tmplData = $this->getTmplData($instance);
 
         // ... or add a function in your functions.php to modify the data there.
-        $tmplData = apply_filters('your_widget_tmpl_data', $tmplData);
+        $tmplData = apply_filters('your_widget_tmpl_data', $tmplData, $this->id_base);
 
         $tmplFile = $this->tmplDir . 'widget.html';
         if (isset($instance['template_file']) && !empty($instance['template_file'])) {

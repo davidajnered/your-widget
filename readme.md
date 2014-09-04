@@ -27,41 +27,44 @@ $fields => [
 The title and template_file are added by the plugin. Real world example below.
 
 ```
-$fields = [
-    'number_of_posts' => [
-        'label' => 'Number of posts',
-        'type' => 'number',
-    ],
-    'category' => [
-        'label' => 'Category',
-        'type' => 'radio',
-        'options' => [
-            'popular' => [
-                'label' => 'Popular posts',
-                'value' => 'popular',
-            ],
-            'recent' => [
-                'label' => 'Recent posts',
-                'value' => 'recent',
-            ],
-            'similar' => [
-                'label' => 'Similar posts',
-                'value' => 'similar',
+function modify_widget_fields($fields, $widget_id) {
+    $fields = [
+        'number_of_posts' => [
+            'label' => 'Number of posts',
+            'type' => 'number',
+        ],
+        'category' => [
+            'label' => 'Category',
+            'type' => 'radio',
+            'options' => [
+                'popular' => [
+                    'label' => 'Popular posts',
+                    'value' => 'popular',
+                ],
+                'recent' => [
+                    'label' => 'Recent posts',
+                    'value' => 'recent',
+                ],
+                'similar' => [
+                    'label' => 'Similar posts',
+                    'value' => 'similar',
+                ]
             ]
         ]
-    ]
-];
+    ];
+}
+add_filter('your_widget_fields', 'modify_widget_fields', 10, 2);
 ```
 
 ## Setup your template data.
 There's a filter which allows you to add your own template data. Say you've saved an post id in one of your widget fields. You can now use your filter to load tthe post and add its data to the template.
 
 ```
-add_filter('your_widget_tmpl_data', function ($tmplData) {
+add_filter('your_widget_tmpl_data', function ($tmplData$, $widget_id) {
     $tmplData['post'] = (array) get_post($tmplData['id']);
 
     return $tmplData;
-});
+}, 10, 2);
 ```
 
 ## Design output
