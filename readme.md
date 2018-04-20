@@ -1,13 +1,12 @@
-Your Widget - A WP Framework
+Your Widget - A Wordpress Framework
 =========
 
 Your Widget is a code framework for fast and easy development of new wordpress widgets. It has all the necessary methods implemented, and Twig is loaded and setup and ready for templating.
 
-The idea is built on a three step process.
+The framework is built on a three step process.
 
-
-## Define your data.
-Your have to defined the type of data you want your widget to contain. The method for this is somewhat inspired by the drupal form API where you define your fields in an array. The structure is as follows.
+## 1. Define your data.
+You defined the type of data you want your widget to contain. The method for this is somewhat inspired by the drupal form API where you define your fields in an array. The structure is as follows.
 
 ```
 $fields => [
@@ -17,8 +16,10 @@ $fields => [
         'type' => 'input type',
         // Options are only used for checkboxes and radio buttons
         'options' => [
-            'label' => 'The label visible to users. Overrides previous label',
-            'value' => 'Unique value to identify selected option',
+            key => [
+                'label' => 'The label visible to the user.',
+                'value' => 'Unique value to identify selected option.',
+            ]
         ]
     ]
 ]
@@ -56,8 +57,8 @@ function modify_widget_fields($fields, $widget_id) {
 add_filter('your_widget_fields', 'modify_widget_fields', 10, 2);
 ```
 
-## Setup your template data.
-There's a filter which allows you to add your own template data. Say you've saved an post id in one of your widget fields. You can now use your filter to load tthe post and add its data to the template.
+## 2. Setup your template data.
+There's a filter which allows you to add your own template data. Let's say you have saved an post id in one of your widget fields. You can now use the filter to load the post and add its data to the template.
 
 ```
 add_filter('your_widget_tmpl_data', function ($tmplData$, $widget_id) {
@@ -67,8 +68,8 @@ add_filter('your_widget_tmpl_data', function ($tmplData$, $widget_id) {
 }, 10, 2);
 ```
 
-## Design output
-Finally design the output by adding a template file in the theme root directory. Your Widget uses Twig as template engine. You find the documentation [here](http://twig.sensiolabs.org/documentation). Simple example below where I've added post data to the template data array.
+## 3. Design output
+Design the output by adding a template file in the theme root directory. Your widget automatically searches for `[template].html`. We're using .html because Twig is your friend and your template engine. You find the Twig documentation [here](http://twig.sensiolabs.org/documentation). Simple example below where I've added post data to the template data array.
 
 ```
 {{before_widget}}

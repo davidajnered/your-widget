@@ -1,14 +1,14 @@
 <?php
 /**
  * Plugin Name: Your Widget
- * Version: 0.1
+ * Version: 1
  * Plugin URI: http://davidajnered.com
  * Description: Your Widget is a code framework for fast and easy development of new wordpress widgets.
  * Author: David Ajnered
  */
 namespace YourWidgetNamespace;
 
-class YourlWidget extends \WP_Widget
+class YourWidget extends \WP_Widget
 {
     /**
      * @var Twig

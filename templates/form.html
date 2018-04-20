@@ -1,13 +1,14 @@
 {% for field in form_fields %}
     <p>
         <label for="{{field_id}}">{{field.label}}:</label>
-        {% if field.type == 'checkbox' %}
+        {% if field.type == 'checkbox' or field.type == 'radio' %}
             {% for option in field.options %}
-                <input id="{{option.value}}" type="{{field.type}}" name="{{field.field_name}}[]" value="{{option.value}}"{% if option.value in field.selected %} checked{% endif %}>
-                <label for="{{option.value}}">{{option.label}}</label>
+                <br>
+                <input id="{{field.field_name}}{{option.value}}" type="{{field.type}}" name="{{field.field_name}}[]" value="{{option.value}}"{% if option.value in field.selected %} checked{% endif %}>
+                <label for="{{field.field_name}}{{option.value}}">{{option.label}}</label>
             {% endfor %}
         {% else %}
-            <input id="{{field.field_id}}" type="{{field.type}}" name="{{field.field_name}}" value="{{field.value}}">
+            <input class="widefat" id="{{field.field_id}}" type="{{field.type}}" name="{{field.field_name}}" value="{{field.value}}">
         {% endif %}
     </p>
 {% endfor %}
